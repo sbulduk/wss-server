@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wss-server-auth
+  labels:
+    app: wss-server-auth
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: wss-server-auth
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 3
+  template:
+    metadata:
+      labels:
+        app: wss-server-auth
+    spec:
+      containers:
+        - name: wss-server-auth
+          image: sbulduk/wss-server-auth
+          ports:
+            - containerPort: 5000
+          envFrom:
+          - configMapRef:
+              name: wss-server-auth-configmap
+          - secretRef:
+              name: wss-server-auth-secret

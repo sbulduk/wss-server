@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wss-server-gateway
+  labels:
+    app: wss-server-gateway
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: wss-server-gateway
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 3
+  template:
+    metadata:
+      labels:
+        apps: wss-server-gateway
+    spec:
+      containers:
+        - name: wss-server-gateway
+          image: sbulduk/wss-server-gateway
+          envFrom:
+            - configMapRef:
+                name: wss-server-gateway-configmap
+            - secretRef:
+                name: wss-server-gateway-secret
