@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: wss-server-rabbitmq
+spec:
+  serviceName: "not-applicable"
+  selector:
+    matchLabels:
+      app: wss-server-rabbitmq
+  template:
+    metadata:
+      labels:
+        app: wss-server-rabbitmq
+    spec:
+      containers:
+        - name: wss-server-rabbitmq
+          image: rabbitmq:3-management
+          ports:
+            - name: http
+              protocol: TCP
+              containerPort: 15672
+            - name: amqp
+              protocol: TCP
+              containerPort: 5672
+          envFrom:
+            - configMapRef:
+                name: wss-server-rabbitmq-configmap
+            - secretRef:
+                name: wss-server-rabbitmq-secret
+          volumeMounts:
+            - mountPath: "/var/lib/rabbitmq"
+              name: wss-server-rabbitmq-volume
+      volumes:
+        - name: wss-server-rabbitmq-volume
+          persistentVolumeClaim:
+            claimName: wss-server-rabbitmq-pvc
