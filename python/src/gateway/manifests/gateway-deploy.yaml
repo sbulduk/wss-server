@@ -16,7 +16,7 @@ spec:
   template:
     metadata:
       labels:
-        apps: wss-server-gateway
+        app: wss-server-gateway
     spec:
       containers:
         - name: wss-server-gateway
