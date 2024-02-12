@@ -39,7 +39,7 @@ def upload():
 
 			if err:
 				return err
-			return "Success",200
+		return "Success",200
 	else:
 		return "Not authorized",401
 	
